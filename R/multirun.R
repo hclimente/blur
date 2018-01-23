@@ -2,17 +2,16 @@
 #'
 #' @description Plot a heatmap displaying the consistency in the selection of different experiments.
 #'
-#' @param labels Labels for the different experiments. Must be the same size of the number of experiments.
-#' @param ... Outputs of martini.
+#' @param ... Named outputs of martini e.g. "AdditiveModel = cones_am, RecessiveModel = cones_re".
 #' @return A heatmap with each of the SNPs selected in any of the experiments, and where they were selected.
 #' @importFrom dplyr filter mutate starts_with
 #' @importFrom tidyr gather
 #' @importFrom ggplot2 element_blank ggplot geom_tile scale_fill_manual theme aes facet_grid labs
 #' @importFrom magrittr %>%
 #' @export
-consistency <- function(labels, ...) {
+consistency <- function(...) {
 
-  cones <- join_experiments(labels = labels, ...)
+  cones <- join_experiments(...)
 
   gather(cones, key = "experiment", value = "selected", starts_with("selected")) %>%
   mutate(selected = ifelse(is.na(selected), FALSE, selected),
@@ -31,14 +30,14 @@ consistency <- function(labels, ...) {
 #'
 #' @description Join the outputs of martini for different experiments
 #'
-#' @param labels Labels for the different experiments. Must be the same size of the number of experiments.
-#' @param ... Outputs of martini.
+#' @param ... Named outputs of martini e.g. '"Additive model" = cones_am, Recessive = cones_re'.
 #' @return Dataframe containing all the experiments.
 #' @importFrom dplyr full_join
 #' @export
-join_experiments <- function(labels, ...) {
+join_experiments <- function(...) {
 
   experiments <- list(...)
+  labels <- names(experiments)
   for (i in 1:length(experiments)) {
     e <- subset(experiments[[i]], selected)
     colnames(e)[7] <- paste0("C_", labels[i])

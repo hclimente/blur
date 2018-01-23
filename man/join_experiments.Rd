@@ -4,12 +4,10 @@
 \alias{join_experiments}
 \title{Join cones}
 \usage{
-join_experiments(labels, ...)
+join_experiments(...)
 }
 \arguments{
-\item{labels}{Labels for the different experiments. Must be the same size of the number of experiments.}
-
-\item{...}{Outputs of martini.}
+\item{...}{Named outputs of martini e.g. '"Additive model" = cones_am, Recessive = cones_re'.}
 }
 \value{
 Dataframe containing all the experiments.

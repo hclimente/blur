@@ -4,12 +4,10 @@
 \alias{consistency}
 \title{Consistency among different experiments}
 \usage{
-consistency(labels, ...)
+consistency(...)
 }
 \arguments{
-\item{labels}{Labels for the different experiments. Must be the same size of the number of experiments.}
-
-\item{...}{Outputs of martini.}
+\item{...}{Named outputs of martini e.g. "AdditiveModel = cones_am, RecessiveModel = cones_re".}
 }
 \value{
 A heatmap with each of the SNPs selected in any of the experiments, and where they were selected.

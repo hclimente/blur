@@ -9,7 +9,7 @@
 #' @importFrom ggplot2 ggplot geom_histogram aes labs
 #' @importFrom magrittr %>%
 #' @export
-plot_size <- function(cones, min_size = 1) {
+module_size <- function(cones, min_size = 1) {
 
   compute_mod_size(cones) %>%
     filter(size > min_size) %>%
@@ -29,7 +29,7 @@ plot_size <- function(cones, min_size = 1) {
 #' @importFrom ggplot2 ggplot stat_binhex aes labs theme
 #' @importFrom magrittr %>%
 #' @export
-plot_size_association <- function(cones) {
+module_size_association <- function(cones) {
 
   ggplot(compute_mod_size(cones), aes(x = size, y = C)) +
     stat_binhex() +
