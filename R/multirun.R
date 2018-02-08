@@ -15,7 +15,8 @@ consistency <- function(...) {
 
   gather(cones, key = "experiment", value = "selected", starts_with("selected")) %>%
   mutate(selected = ifelse(is.na(selected), FALSE, selected),
-         experiment = gsub("selected_", "", experiment)) %>%
+         experiment = gsub("selected_", "", experiment),
+         experiment = factor(experiment, levels = unique(experiment))) %>%
   ggplot(aes(x = experiment, y = as.character(pos), fill = ifelse(selected, "Yes", "No"))) +
     geom_tile() +
     labs(x = "Experiment", y = "Genomic position", fill = "Selected") +
@@ -50,6 +51,9 @@ join_experiments <- function(...) {
       cones <- full_join(cones, e, by = c("snp","chr","cm","pos","allele.1","allele.2"), all = T)
     }
   }
+
+  cones <- cones %>%
+    mutate(consistency = rowSums(.[grep("selected", names(.))], na.rm = TRUE)/length(experiments))
 
   return(cones)
 
