@@ -41,9 +41,9 @@ join_experiments <- function(...) {
   labels <- names(experiments)
   for (i in 1:length(experiments)) {
     e <- subset(experiments[[i]], selected)
-    colnames(e)[7] <- paste0("C_", labels[i])
-    colnames(e)[8] <- paste0("selected_", labels[i])
-    colnames(e)[9] <- paste0("modules_", labels[i])
+    colnames(e)[colnames(e) == 'c'] <- paste0("C_", labels[i])
+    colnames(e)[colnames(e) == 'selected'] <- paste0("selected_", labels[i])
+    colnames(e)[colnames(e) == 'module'] <- paste0("modules_", labels[i])
 
     if (i == 1) {
       cones <- e

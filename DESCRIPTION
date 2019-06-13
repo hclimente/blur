@@ -12,7 +12,8 @@ Imports:
   ggnetwork,
   ggplot2,
   magrittr,
-  tidyr
+  tidyr,
+  IRanges
 Suggests:
   circlize (>= 0.4.0),
   GenomeInfoDb (>= 1.10.3),

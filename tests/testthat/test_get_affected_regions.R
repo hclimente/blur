@@ -3,11 +3,14 @@ net <- get_GI_network(minigwas, snpMapping = minisnpMapping, ppi = minippi)
 cones <- minigwas$map
 colnames(cones) <- c("chr","snp","cm","pos","allele.1", "allele.2")
 cones$selected <- FALSE
+cones$c <- abs(rnorm(nrow(cones), 0, 1))
 
 # region 1, spanning genes A and B
 cones$selected[4:8] <- TRUE
+cones$c[4:8] <- abs(rnorm(5, 10, 1))
 # region 2, spanning gene C
 cones$selected[16:21] <- TRUE
+cones$c[16:21] <- abs(rnorm(6, 10, 1))
 
 cones <- martini:::get_snp_modules(cones, net)
 
