@@ -56,12 +56,12 @@ compute_mod_size <- function(cones) {
 
 }
 
-#' @importFrom dplyr mutate summarise select arrange
+#' @importFrom dplyr mutate summarise select arrange left_join
 #' @importFrom GenomicRanges GRanges
-#' @importFrom IRanges findOverlaps IRanges with
+#' @importFrom IRanges findOverlaps IRanges
 #' @importFrom S4Vectors queryHits subjectHits
 #' @export
-table_regions <- function(cones, net) {
+table_regions <- function(cones, snp2gene) {
 
   cones <- filter(cones, selected)
 
@@ -75,13 +75,14 @@ table_regions <- function(cones, net) {
   cones <- cbind(cones[queryHits(olaps),], select(cytobands[subjectHits(olaps),],-chr))
 
   cones %>%
+    left_join(snp2gene, by = 'snp') %>%
     group_by(chr, band, module) %>%
     summarise(region = unique(paste0(chr, band)),
               coords = paste(min(pos), max(pos), sep = '-'),
-              genes = paste(na.omit(unique(martini:::subvert(net, 'name', snp)$gene)), collapse = ','),
-              numGeneSnps = sum(is.na(martini:::subvert(net, 'name', snp)$gene)),
+              genes = paste(unique(na.omit(gene)), collapse = ','),
+              noGeneSnps = sum(is.na(gene)),
               bestSnp = snp[which.max(c)],
-              numSnps = paste0(n(), ' (', numGeneSnps, ')')) %>%
+              numSnps = paste0(length(unique(snp)), ' (', noGeneSnps, ')')) %>%
     ungroup %>%
     arrange(chr, coords) %>%
     select(region, module, coords, bestSnp, genes, numSnps)
